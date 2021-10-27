@@ -1,4 +1,15 @@
-const SearchPanel = ({ params, setParams, userList }) => {
+import { User } from "./list";
+
+interface SearchPanelProps {
+    params: {
+        name: string;
+        personId: string;
+    };
+    setParams: (params: SearchPanelProps['params']) => void,
+    userList: User[]
+}
+
+const SearchPanel = ({ params, setParams, userList }: SearchPanelProps) => {
   return (
     <div>
       <input

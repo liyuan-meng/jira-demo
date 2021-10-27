@@ -1,4 +1,22 @@
-const List = ({ projects, userList }) => {
+interface Project {
+    id: string;
+    name: string;
+    personId: string;
+    organization: string;
+    created: string;
+}
+
+export interface User {
+    id: string;
+    name: string;
+}
+
+interface ListProps {
+    projects: Project[];
+    userList: User[]
+}
+
+const List = ({ projects, userList }: ListProps) => {
   return (
     <table>
       <thead>
