@@ -1,11 +1,13 @@
 import React from 'react';
 import './App.css'
-import ProjectListScreen from "./screen/project-list";
+// import ProjectListScreen from "./screen/project-list";
+import TsReactTest from "./try-use-array";
 
 function App() {
   return (
     <div className="App">
-      <ProjectListScreen/>
+      {/*<ProjectListScreen/>*/}
+      <TsReactTest />
     </div>
   );
 }
