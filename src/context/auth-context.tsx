@@ -1,20 +1,37 @@
 import React, {ReactNode, useState} from "react";
 import * as auth from '../auth-provider';
 import {User} from "../screen/project-list/list";
+import {useMount} from "../utils";
+import {http} from "../utils/http";
 
-interface authForm {
+interface AuthForm {
     username: string;
     password: string;
 }
 
-const AuthContext = React.createContext<{ user: User | null; login: (form: authForm) => Promise<void>; register: (form: authForm) => Promise<void>; logout: () => Promise<void> } | undefined>(undefined);
+const bootstrapUser = async () => {
+    let user = null;
+    const token = auth.getToken();
+    if (token) {
+        const data = await http('me', { token });
+        user = data.user;
+    }
+    return user;
+};
+
+const AuthContext = React.createContext<{ user: User | null; login: (form: AuthForm) => Promise<void>; register: (form: AuthForm) => Promise<void>; logout: () => Promise<void> } | undefined>(undefined);
 AuthContext.displayName = 'AuthContext';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
 
-    const login = (form: authForm) => auth.login(form).then(res => setUser(res));
-    const register = (form: authForm) => auth.register(form).then(setUser);
+    // 初始化 user，解决登录后再次刷新页面，页面回到登录页的问题
+    useMount(() => {
+        bootstrapUser().then(setUser);
+    });
+
+    const login = (form: AuthForm) => auth.login(form).then(res => setUser(res));
+    const register = (form: AuthForm) => auth.register(form).then(setUser);
     const logout = () => auth.logout().then(() => setUser(null));
 
     return <AuthContext.Provider value={{ user, login, register, logout }}>{children}</AuthContext.Provider>
