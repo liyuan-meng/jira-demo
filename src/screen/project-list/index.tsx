@@ -21,6 +21,7 @@ const ProjectListScreen = () => {
 
   useEffect(() => {
     client('projects', { data: cleanObject(debouncedParams) }).then(setProjects)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedParams]);
 
   return (

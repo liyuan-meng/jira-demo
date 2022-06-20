@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 
-export const isFalsy = (value: any) => (value === 0 ? false : !value);
+export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
+export const isVoid = (value: unknown) =>
+  value === undefined || value === null || value === "";
 
-export const cleanObject = (obj: object) => {
-  return Object.keys(obj).reduce((result, key) => {
-    // @ts-ignore
-    if (!isFalsy(obj[key])) {
-      // @ts-ignore
+// let b:{ [key: string]: unknown };
+// b = { name: 'jack' }; // 不报错
+// b = () => {}; // 报错
+export const cleanObject = (obj: { [key: string]: unknown }) => {
+  return Object.keys(obj).reduce((result: { [key: string]: unknown }, key) => {
+    if (!isVoid(obj[key])) {
       result[key] = obj[key];
     }
     return result;
@@ -25,6 +28,8 @@ export const qs = (obj: any) => {
 export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
+    // TODO 依赖项里加入 callback 会造成无限循环，这个和 useCallback 以及 useMemo 有关系
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 
@@ -34,6 +39,7 @@ export const useDebounce = <V>(value: V, delay: number) => {
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedValue(value), delay);
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return debouncedValue;

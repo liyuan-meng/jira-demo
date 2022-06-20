@@ -24,6 +24,7 @@ const List = ({ projects, userList }: ListProps) => {
     return (
         <Table
             pagination={false}
+            rowKey="id"
             columns={
                 [
                     {
@@ -37,6 +38,7 @@ const List = ({ projects, userList }: ListProps) => {
                     },
                     {
                         title: '负责人',
+                        dataIndex: 'personId',
                         render: (value, project) => {
                             return (
                                 <span>
@@ -47,6 +49,7 @@ const List = ({ projects, userList }: ListProps) => {
                     },
                     {
                         title: '创建时间',
+                        dataIndex: 'created',
                         render: (value, project) => {
                             return (
                                 <span>

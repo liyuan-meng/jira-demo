@@ -2,6 +2,7 @@ import LoginScreen from "./login";
 import RegisterScreen from "./register";
 import { useState } from "react";
 import { Card, Divider } from "antd";
+import { Button } from 'antd';
 import styled from "@emotion/styled";
 import logo from "../assets/logo.svg";
 import left from "../assets/left.svg";
@@ -21,9 +22,9 @@ const UnauthenticatedApp = () => {
         <Title>{isRegister ? "请注册" : "请登录"}</Title>
         {isRegister ? <RegisterScreen /> : <LoginScreen />}
         <Divider />
-        <a onClick={onToggleClick}>
+        <Button type="link" onClick={onToggleClick}>
           切换到{isRegister ? "已经有账号了？直接登录" : "没有账号？注册新账号"}
-        </a>
+        </Button>
       </ShadowCard>
     </Container>
   );
