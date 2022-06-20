@@ -1,16 +1,55 @@
 import ProjectListScreen from "./screen/project-list";
 import {useAuth} from "./context/auth-context";
 import { Button } from 'antd';
+import styled from "@emotion/styled";
+
+/**
+ * grid 和 flex 各自的应用场景
+ * 1. 要考虑，是一维布局 还是 二维布局
+ * 一般来说，一维布局用flex，二维布局用grid
+ * 2. 是从内容出发还是从布局出发？
+ * 从内容出发：你先有一组内容(数量一般不固定),然后希望他们均匀的分布在容器中，由内容自己的大小决定占据的空间
+ * 从布局出发：先规划网格(数量一般比较固定)，然后再把元素往里填充
+ * 从内容出发，用flex
+ * 从布局出发，用grid
+ *
+ */
 
 const AuthenticatedApp = () => {
     const { logout } = useAuth();
 
     return (
-        <div>
-            <ProjectListScreen/>
-            <Button onClick={logout}>登出</Button>
-        </div>
+        <Container>
+            <Header>
+                <Button onClick={logout}>登出</Button>
+            </Header>
+            <Nav>nav</Nav>
+            <Main>
+                <ProjectListScreen/>
+            </Main>
+            <Aside>aside</Aside>
+            <Footer/>
+        </Container>
     )
 };
 
 export default AuthenticatedApp;
+
+const Container = styled.div`
+    display: grid;
+    grid-template-rows: 6rem 1fr 6rem;
+    grid-template-columns: 20rem 1fr 20rem;
+    grid-template-areas: 
+            "header header header"
+    "nav main aside"
+    "footer footer footer";
+    height: 100vh;
+    grid-gap: 10rem
+`
+
+// grid-area 用来给 grid 子元素起名字
+const Header = styled.header`grid-area: header`;
+const Main = styled.header`grid-area: main`;
+const Nav = styled.header`grid-area: nav`;
+const Aside = styled.header`grid-area: aside`;
+const Footer = styled.header`grid-area: footer`;
