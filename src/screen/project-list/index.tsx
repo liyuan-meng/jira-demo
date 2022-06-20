@@ -3,6 +3,7 @@ import SearchPanel from "./search-panel";
 import List from "./list";
 import { cleanObject, useMount, useDebounce } from "../../utils";
 import { useHttp } from "../../utils/http";
+import styled from "@emotion/styled";
 
 const ProjectListScreen = () => {
   const [params, setParams] = useState({
@@ -23,11 +24,16 @@ const ProjectListScreen = () => {
   }, [debouncedParams]);
 
   return (
-    <div>
+    <Container>
+      <h1>项目列表</h1>
       <SearchPanel params={params} setParams={setParams} userList={userList} />
       <List projects={projects} userList={userList} />
-    </div>
+    </Container>
   );
 };
 
 export default ProjectListScreen;
+
+const Container = styled.div`
+  padding: 3.2rem;
+`
