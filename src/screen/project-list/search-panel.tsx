@@ -1,4 +1,5 @@
 import { User } from "./list";
+import { Input, Select } from 'antd';
 
 interface SearchPanelProps {
     params: {
@@ -12,7 +13,7 @@ interface SearchPanelProps {
 const SearchPanel = ({ params, setParams, userList }: SearchPanelProps) => {
   return (
     <div>
-      <input
+      <Input
         type="text"
         value={params.name}
         onChange={(evt) =>
@@ -22,22 +23,22 @@ const SearchPanel = ({ params, setParams, userList }: SearchPanelProps) => {
           })
         }
       />
-      <select
+      <Select
         value={params.personId}
-        onChange={(evt) =>
+        onChange={value =>
           setParams({
             ...params,
-            personId: evt.target.value,
+            personId: value,
           })
         }
       >
-        <option value="">负责人</option>
+        <Select.Option value="">负责人</Select.Option>
         {userList.map((user) => (
-          <option key={user.id} value={user.id}>
+          <Select.Option key={user.id} value={user.id}>
             {user.name}
-          </option>
+          </Select.Option>
         ))}
-      </select>
+      </Select>
     </div>
   );
 };
