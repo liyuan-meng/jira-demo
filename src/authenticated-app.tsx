@@ -1,5 +1,6 @@
 import ProjectListScreen from "./screen/project-list";
 import {useAuth} from "./context/auth-context";
+import { Button } from 'antd';
 
 const AuthenticatedApp = () => {
     const { logout } = useAuth();
@@ -7,7 +8,7 @@ const AuthenticatedApp = () => {
     return (
         <div>
             <ProjectListScreen/>
-            <button onClick={logout}>登出</button>
+            <Button onClick={logout}>登出</Button>
         </div>
     )
 };
