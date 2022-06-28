@@ -12,7 +12,15 @@ const defaultInitialState: State<null> = {
   stat: "idle",
 };
 
-export const useAsync = <D>(initialState?: State<D>) => {
+const defaultConfig = {
+  throwOnError: false,
+};
+
+export const useAsync = <D>(
+  initialState?: State<D>,
+  initialConfig?: typeof defaultConfig
+) => {
+  const config = { ...defaultConfig, ...initialConfig };
   // 数据初始化
   const [state, setState] = useState<State<D>>({
     ...defaultInitialState,
@@ -48,7 +56,11 @@ export const useAsync = <D>(initialState?: State<D>) => {
         return data;
       })
       .catch((error) => {
+        // catch 会消化异常，如果不主动抛出异常，外面是接收不到异常的（登录页面的 try catch ）；把 return error 改成 return Promise.reject(error)
         setError(error);
+        if (config.throwOnError) {
+          return Promise.reject(error);
+        }
         return error;
       });
   };
