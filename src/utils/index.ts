@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { doc } from "prettier";
 
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 export const isVoid = (value: unknown) =>
@@ -71,3 +72,25 @@ export function useArray<T>(
 
   return [values, clear, removeIndex, add];
 }
+
+export const useDocumentTitle = (
+  title: string,
+  keepOnUnmount: boolean = true
+) => {
+  // 页面加载时，oldTitle === 旧title
+  // 页面加载后，oldTitle === 新title
+  const oldTitle = document.title;
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
+  // 组件卸载时，使用旧的 title
+  useEffect(() => {
+    return () => {
+      if (!keepOnUnmount) {
+        // 如果不指定依赖[oldTitle]，读取到的就是旧title（闭包所致）
+        document.title = oldTitle;
+      }
+    };
+  }, []);
+};

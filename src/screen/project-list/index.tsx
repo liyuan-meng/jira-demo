@@ -1,13 +1,14 @@
 import { useState } from "react";
 import SearchPanel from "./search-panel";
 import List from "./list";
-import { useDebounce } from "../../utils";
+import {useDebounce, useDocumentTitle} from "../../utils";
 import styled from "@emotion/styled";
 import {Typography} from "antd";
 import {useProject} from "../../utils/project";
 import {useUsers} from "../../utils/user";
 
 const ProjectListScreen = () => {
+    useDocumentTitle('项目列表', false);
   const [params, setParams] = useState({
     name: "",
     personId: "",
