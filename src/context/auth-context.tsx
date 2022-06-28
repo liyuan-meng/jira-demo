@@ -1,8 +1,10 @@
-import React, {ReactNode, useState} from "react";
+import React, {ReactNode} from "react";
 import * as auth from '../auth-provider';
 import {User} from "../screen/project-list/list";
 import {useMount} from "../utils";
 import {http} from "../utils/http";
+import {useAsync} from "../utils/use-async";
+import {FullPageErrorFallback, FullPageLoading} from "../components/lib";
 
 interface AuthForm {
     username: string;
@@ -23,12 +25,22 @@ const AuthContext = React.createContext<{ user: User | null; login: (form: AuthF
 AuthContext.displayName = 'AuthContext';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [user, setUser] = useState<User | null>(null);
+    const {run, data: user, error, isLoading, isIdle, isError, setData: setUser} = useAsync<User | null>();
 
     // 初始化 user，解决登录后再次刷新页面，页面回到登录页的问题
     useMount(() => {
-        bootstrapUser().then(setUser);
+        run(bootstrapUser())
     });
+
+    // 未加载和加载中
+    if (isIdle || isLoading) {
+        return <FullPageLoading/>
+    }
+
+    // 加载失败
+    if (isError) {
+        return <FullPageErrorFallback error={error}/>
+    }
 
     const login = (form: AuthForm) => auth.login(form).then(res => setUser(res));
     const register = (form: AuthForm) => auth.register(form).then(setUser);
