@@ -1,7 +1,8 @@
 import { Table } from 'antd';
 import dayjs from "dayjs";
+import {TableProps} from "antd/es";
 
-interface Project {
+export interface Project {
     id: string;
     name: string;
     personId: string;
@@ -15,12 +16,15 @@ export interface User {
     token: string;
 }
 
-interface ListProps {
-    projects: Project[];
+// ListProps 由两部分组成，一个是 userList，另一部分是 Table 组件的 props
+// TableProps<Project> 是一个范性接口 https://www.tslang.cn/docs/handbook/generics.html
+// 这里使用 extends 继承，是为了外层给 List 组件传入的参数，可以直接透传给 Table
+interface ListProps extends TableProps<Project> {
     userList: User[]
 }
 
-const List = ({ projects, userList }: ListProps) => {
+// 这里 props 的类型就是 Omit<ListProps, userList>
+const List = ({ userList, ...props }: ListProps) => {
     return (
         <Table
             pagination={false}
@@ -60,7 +64,7 @@ const List = ({ projects, userList }: ListProps) => {
                     },
                 ]
             }
-            dataSource={projects}
+            {...props}
         />
     )
 };

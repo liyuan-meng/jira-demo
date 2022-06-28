@@ -48,7 +48,8 @@ export const useDebounce = <V>(value: V, delay: number) => {
 // [T[], () => void, (index: number) => void, (data: T) => void]
 // 返回数组的时候需要加此处的声明（ts中数组中各项的类型应该是一样的）
 // 返回对象则不需要（会进行类型推断）
-// ps: 可以在 function useArray<T> 这里给泛型一个默认值 function useArray<T = {user: string; name: string}>；在使用 useArray 的时候也可以给泛型赋值：useArray<{ user: string } | undefined>([{ user: '3434' }, undefined])
+// ps: 可以在 function useArray<T> 这里给泛型一个默认值 function useArray<T = {user: string; name: string}>；
+// ps: 在使用 useArray 的时候也可以给泛型赋值：useArray<{ user: string } | undefined>([{ user: '3434' }, undefined])
 export function useArray<T>(
   arr: T[]
 ): [T[], () => void, (index: number) => void, (data: T) => void] {
