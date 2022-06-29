@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { doc } from "prettier";
 
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
@@ -77,9 +77,9 @@ export const useDocumentTitle = (
   title: string,
   keepOnUnmount: boolean = true
 ) => {
-  // 页面加载时，oldTitle === 旧title
-  // 页面加载后，oldTitle === 新title
-  const oldTitle = document.title;
+  // const refContainer = useRef(initialValue);
+  // useRef 返回一个可变的 ref 对象，其 .current 属性被初始化为传入的参数（initialValue）。返回的 ref 对象在组件的整个生命周期内持续存在。
+  const oldTitle = useRef(document.title).current;
   useEffect(() => {
     document.title = title;
   }, [title]);
@@ -88,9 +88,8 @@ export const useDocumentTitle = (
   useEffect(() => {
     return () => {
       if (!keepOnUnmount) {
-        // 如果不指定依赖[oldTitle]，读取到的就是旧title（闭包所致）
         document.title = oldTitle;
       }
     };
-  }, []);
+  }, [keepOnUnmount, oldTitle]);
 };

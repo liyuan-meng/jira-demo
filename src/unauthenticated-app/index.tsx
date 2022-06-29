@@ -7,10 +7,10 @@ import styled from "@emotion/styled";
 import logo from "../assets/logo.svg";
 import left from "../assets/left.svg";
 import right from "../assets/right.svg";
-import {useDocumentTitle} from "../utils";
+// import {useDocumentTitle} from "../utils";
 
 const UnauthenticatedApp = () => {
-    useDocumentTitle('请注册登录以继续', false);
+    // useDocumentTitle('请注册登录以继续', false);
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const onToggleClick = () => {
